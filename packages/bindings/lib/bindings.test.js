@@ -29,6 +29,7 @@ const defaultSetFlags = Object.freeze({
   dtr: true,
   dts: false,
   rts: true,
+  low_latency: false,
 })
 
 const listFields = ['path', 'manufacturer', 'serialNumber', 'pnpId', 'locationId', 'vendorId', 'productId']
@@ -330,7 +331,7 @@ function testBinding(bindingName, Binding, testPort) {
 
         it('resolves after a large write (2k)', function () {
           this.timeout(20000)
-          const data = Buffer.alloc(1024 * 2)
+          const data = Buffer.alloc(8 * 2)
           return binding.write(data)
         })
 
@@ -450,6 +451,7 @@ function testBinding(bindingName, Binding, testPort) {
         afterEach(() => binding.close())
 
         testFeature('set.set', 'sets flags on the port', () => {
+          console.log("Setting flag", defaultSetFlags)
           return binding.set(defaultSetFlags)
         })
       })
